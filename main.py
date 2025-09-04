@@ -20,7 +20,7 @@ def load_mammo_model():
         print("⬇ Downloading model from Google Drive...")
 
         # 🔹 Replace FILE_ID with your actual Google Drive file ID
-        url = "https://drive.google.com/uc?export=download&id=FILE_ID"
+        url = "https://drive.google.com/uc?export=download&id=mammogram_model.keras"
 
         response = requests.get(url, stream=True)
         if response.status_code != 200:

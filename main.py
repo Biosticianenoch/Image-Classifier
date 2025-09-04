@@ -6,6 +6,7 @@ from fpdf import FPDF
 import os
 import datetime
 import tempfile
+import requests   # NEW: to fetch model from Google Drive
 
 app = Flask(__name__)
 
@@ -14,11 +15,26 @@ visitor_count = 0
 
 # ------------------------- Load Model -------------------------
 def load_mammo_model():
-    model_path = os.path.expanduser("./mammogram_model.keras")
+    model_path = "./mammogram_model.keras"
     if not os.path.exists(model_path):
-        raise FileNotFoundError(f"Model not found at: {model_path}")
+        print("⬇ Downloading model from Google Drive...")
+
+        # 🔹 Replace FILE_ID with your actual Google Drive file ID
+        url = "https://drive.google.com/uc?export=download&id=FILE_ID"
+
+        response = requests.get(url, stream=True)
+        if response.status_code != 200:
+            raise Exception(f"Failed to download model from Google Drive (status {response.status_code})")
+
+        with open(model_path, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        print("✅ Model downloaded successfully")
+
     return load_model(model_path)
 
+# Load the model once at startup
 model = load_mammo_model()
 
 # ------------------------- Prediction Logic -------------------------

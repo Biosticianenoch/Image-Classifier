@@ -1,8 +1,13 @@
 project/
+
 │── main.py
+
 │── mammogram_model.keras
+
 │── requirements.txt
+
 │── vercel.json
+
 └── templates/
     │── index.html
     │── result.html
